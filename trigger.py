@@ -29,57 +29,57 @@ TRUE = wintypes.BOOL(1)
 
 def open_device(device_path, access, mode, creation, flags):
 	"""See: CreateFile function
-    http://msdn.microsoft.com/en-us/library/windows/desktop/aa363858(v=vs.85).aspx
-    """
-    CreateFile_Fn = windll.kernel32.CreateFileW
-    CreateFile_Fn.argtypes = [
-            wintypes.LPWSTR,                    # _In_          LPCTSTR lpFileName
-            wintypes.DWORD,                     # _In_          DWORD dwDesiredAccess
-            wintypes.DWORD,                     # _In_          DWORD dwShareMode
-            LPSECURITY_ATTRIBUTES,              # _In_opt_      LPSECURITY_ATTRIBUTES lpSecurityAttributes
-            wintypes.DWORD,                     # _In_          DWORD dwCreationDisposition
-            wintypes.DWORD,                     # _In_          DWORD dwFlagsAndAttributes
-            wintypes.HANDLE]                    # _In_opt_      HANDLE hTemplateFile
-    CreateFile_Fn.restype = wintypes.HANDLE
+	http://msdn.microsoft.com/en-us/library/windows/desktop/aa363858(v=vs.85).aspx
+	"""
+	CreateFile_Fn = windll.kernel32.CreateFileW
+	CreateFile_Fn.argtypes = [
+	wintypes.LPWSTR,                    # _In_          LPCTSTR lpFileName
+	wintypes.DWORD,                     # _In_          DWORD dwDesiredAccess
+	wintypes.DWORD,                     # _In_          DWORD dwShareMode
+	LPSECURITY_ATTRIBUTES,              # _In_opt_      LPSECURITY_ATTRIBUTES lpSecurityAttributes
+	wintypes.DWORD,                     # _In_          DWORD dwCreationDisposition
+	wintypes.DWORD,                     # _In_          DWORD dwFlagsAndAttributes
+	wintypes.HANDLE]                    # _In_opt_      HANDLE hTemplateFile
+	CreateFile_Fn.restype = wintypes.HANDLE
 
-    return wintypes.HANDLE(CreateFile_Fn(device_path,
-                         access,
-                         mode,
-                         NULL,
-                         creation,
-                         flags,
-                         NULL))
+	return wintypes.HANDLE(CreateFile_Fn(device_path,
+	access,
+	mode,
+	NULL,
+	creation,
+	flags,
+	NULL))
 
 def send_ioctl(devhandle, ioctl, inbuf, inbufsiz, outbuf, outbufsiz,):
 	"""See: DeviceIoControl function
-    http://msdn.microsoft.com/en-us/library/aa363216(v=vs.85).aspx
-    """
-    DeviceIoControl_Fn = windll.kernel32.DeviceIoControl
-    DeviceIoControl_Fn.argtypes = [
-            wintypes.HANDLE,                    # _In_          HANDLE hDevice
-            wintypes.DWORD,                     # _In_          DWORD dwIoControlCode
-            wintypes.LPVOID,                    # _In_opt_      LPVOID lpInBuffer
-            wintypes.DWORD,                     # _In_          DWORD nInBufferSize
-            wintypes.LPVOID,                    # _Out_opt_     LPVOID lpOutBuffer
-            wintypes.DWORD,                     # _In_          DWORD nOutBufferSize
-            LPDWORD,                            # _Out_opt_     LPDWORD lpBytesReturned
-            LPOVERLAPPED]                       # _Inout_opt_   LPOVERLAPPED lpOverlapped
-    DeviceIoControl_Fn.restype = wintypes.BOOL
+	http://msdn.microsoft.com/en-us/library/aa363216(v=vs.85).aspx
+	"""
+	DeviceIoControl_Fn = windll.kernel32.DeviceIoControl
+	DeviceIoControl_Fn.argtypes = [
+	wintypes.HANDLE,                    # _In_          HANDLE hDevice
+	wintypes.DWORD,                     # _In_          DWORD dwIoControlCode
+	wintypes.LPVOID,                    # _In_opt_      LPVOID lpInBuffer
+	wintypes.DWORD,                     # _In_          DWORD nInBufferSize
+	wintypes.LPVOID,                    # _Out_opt_     LPVOID lpOutBuffer
+	wintypes.DWORD,                     # _In_          DWORD nOutBufferSize
+	LPDWORD,                            # _Out_opt_     LPDWORD lpBytesReturned
+	LPOVERLAPPED]                       # _Inout_opt_   LPOVERLAPPED lpOverlapped
+	DeviceIoControl_Fn.restype = wintypes.BOOL
 
-    # allocate a DWORD, and take its reference
-    dwBytesReturned = wintypes.DWORD(0)
-    lpBytesReturned = ctypes.byref(dwBytesReturned)
+	# allocate a DWORD, and take its reference
+	dwBytesReturned = wintypes.DWORD(0)
+	lpBytesReturned = ctypes.byref(dwBytesReturned)
 
-    status = DeviceIoControl_Fn(devhandle,
-                  ioctl,
-                  inbuf,
-                  inbufsiz,
-                  outbuf,
-                  outbufsiz,
-                  lpBytesReturned,
-                  None)
+	status = DeviceIoControl_Fn(devhandle,
+	ioctl,
+	inbuf,
+	inbufsiz,
+	outbuf,
+	outbufsiz,
+	lpBytesReturned,
+	None)
 
-    return status, dwBytesReturned
+	return status, dwBytesReturned
 
 
 if __name__ == "__main__":
