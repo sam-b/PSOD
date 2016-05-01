@@ -89,4 +89,4 @@ if __name__ == "__main__":
 	bug_check_ioctl = 0x22e00b
 	device_handle = open_device("\\\\.\\PSOD", GENERIC_READ | GENERIC_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL)
 	send_ioctl(device_handle, create_callback_ioctl, None, 0, None, 0)
-	send_ioctl(device_handle, create_callback_ioctl, None, 0, None, 0)
+	send_ioctl(device_handle, bug_check_ioctl, None, 0, None, 0)
