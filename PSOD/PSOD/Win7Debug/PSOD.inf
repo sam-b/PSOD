@@ -1,0 +1,91 @@
+;
+; PSOD.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+Provider=%ManufacturerName%
+CatalogFile=PSOD.cat
+DriverVer=05/02/2016,19.48.36.953
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=SampleClassReg
+
+[SampleClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+PSOD.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTx86
+
+[Standard.NTx86]
+%PSOD.DeviceDesc%=PSOD_Device, Root\PSOD ; TODO: edit hw-id
+
+[PSOD_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+PSOD.sys
+
+;-------------- Service installation
+[PSOD_Device.NT.Services]
+AddService = PSOD,%SPSVCINST_ASSOCSERVICE%, PSOD_Service_Inst
+
+; -------------- PSOD driver install sections
+[PSOD_Service_Inst]
+DisplayName    = %PSOD.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\PSOD.sys
+LoadOrderGroup = Extended Base
+
+;
+;--- PSOD_Device Coinstaller installation ------
+;
+
+[DestinationDirs]
+PSOD_Device_CoInstaller_CopyFiles = 11
+
+[PSOD_Device.NT.CoInstallers]
+AddReg=PSOD_Device_CoInstaller_AddReg
+CopyFiles=PSOD_Device_CoInstaller_CopyFiles
+
+[PSOD_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller01011.dll,WdfCoInstaller"
+
+[PSOD_Device_CoInstaller_CopyFiles]
+WdfCoInstaller01011.dll
+
+[SourceDisksFiles]
+WdfCoInstaller01011.dll=1 ; make sure the number matches with SourceDisksNames
+
+[PSOD_Device.NT.Wdf]
+KmdfService =  PSOD, PSOD_wdfsect
+[PSOD_wdfsect]
+KmdfLibraryVersion = 1.11
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="" ; TODO: add ManufacturerName
+ClassName="Samples" ; TODO: edit ClassName
+DiskName = "PSOD Installation Disk"
+PSOD.DeviceDesc = "PSOD Device"
+PSOD.SVCDESC = "PSOD Service"
