@@ -62,6 +62,9 @@ NTSTATUS DriverEntry(_In_ PDRIVER_OBJECT  DriverObject, _In_ PUNICODE_STRING Reg
 	DriverObject->MajorFunction[IRP_MJ_CREATE] = IrpCreateHandler;
 	DriverObject->MajorFunction[IRP_MJ_CLOSE] = IrpCloseHandler;
 	DriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL] = PSOD_IoControl;
+
+	DriverObject->DriverUnload = IrpUnloadHandler;
+
 	DeviceObject->Flags |= DO_DIRECT_IO;
 	DeviceObject->Flags &= ~DO_DEVICE_INITIALIZING;
 	status = IoCreateSymbolicLink(&Win32Device, &DeviceName);
