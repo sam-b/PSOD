@@ -5,4 +5,4 @@ The implemented bug check callback will modify the VGI settings in order to chan
 
 ![crersh](https://raw.githubusercontent.com/sam-b/PSOD/master/screenshots/psod.PNG)
 
-More details at: (https://www.whitehatters.academy/my-first-windows-driver-creating-the-pink-screen-of-death/)[https://www.whitehatters.academy/my-first-windows-driver-creating-the-pink-screen-of-death/]
+More details at: [https://www.whitehatters.academy/my-first-windows-driver-creating-the-pink-screen-of-death/](https://www.whitehatters.academy/my-first-windows-driver-creating-the-pink-screen-of-death/)
